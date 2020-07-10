@@ -7,25 +7,28 @@ const port = 3001;
 const AWS = require('aws-sdk');
 AWS.config.update({
     region: "ap-southeast-2",
-    endpoint: "ec2-13-238-89-92.ap-southeast-2.compute.amazonaws.com:3001"
 });
 const dbClient = new AWS.DynamoDB.DocumentClient();
 
 const handleGet = (request, response) => {
+    console.log('Inside handleGet')
     let params = {
         TableName: "users",
         Key: {
-            "DiscordId": '123'
+            "DiscordId": '123',
         }
     }
 
+    console.log('Before dbClient');
     dbClient.get(params, function(err, data) {
         if (err) {
             console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
             console.log("GetItem succeeded:", JSON.stringify(data, null, 2));
+            response.send(JSON.stringify(data, null, 2));
         }
     });
+    
 }
 
 app.get('/', (request, response) => handleGet(request, response));
