@@ -55,7 +55,7 @@ const handlePost = async (request, response) => {
         }
     }
     await dbClient.put(newDungeonParams).promise();
-    response.status(200).send('SENT OK');
+    response.status(201).send(`New dungeon has been created for partyId ${body.partyId}`);
 }
 
 app.post('/create-dungeon', (request, response) => handlePost(request, response));
